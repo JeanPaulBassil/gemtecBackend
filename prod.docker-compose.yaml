@@ -1,0 +1,92 @@
+version: "3"
+
+services:
+  minio:
+    image: minio/minio
+    restart: unless-stopped
+    ports:
+      - ${MINIO_API_PORT}:${MINIO_API_PORT}
+      - ${MINIO_CONSOLE_PORT}:${MINIO_CONSOLE_PORT}
+    environment:
+      MINIO_ROOT_USER: ${STACKHERO_MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${STACKHERO_MINIO_SECRET_KEY}
+    command: minio server --console-address ":${MINIO_CONSOLE_PORT}" /data
+    volumes:
+      - gemtec-api-miniodata:/data
+    networks:
+      - gemtec-api-network
+
+  prisma-studio:
+    container_name: prisma-studio
+    image: timothyjmiller/prisma-studio:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - ${PRISMA_STUDIO_PORT}:5555
+    networks:
+      - gemtec-api-network
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: gemtec-api-postgres
+    image: postgres:15-alpine
+    restart: unless-stopped
+    user: ${POSTGRES_USER}
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - gemtec-api-network
+    volumes:
+      - gemtec-api-postgres-data:/var/lib/postgresql/data/
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready",
+          "-U",
+          "${POSTGRES_USER}",
+          "-d",
+          "${POSTGRES_DB}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gemtec-api:
+    container_name: gemtec-api-nestjs
+    build:
+      context: .
+      dockerfile: ./docker/${NODE_ENV}.Dockerfile
+    env_file:
+      - .env
+    networks:
+      - gemtec-api-network
+    expose:
+      - ${NESTJS_PORT}
+    ports:
+      - ${NESTJS_PORT}:${NESTJS_PORT}
+    depends_on:
+      - postgres
+      - minio
+      - prisma-studio
+
+  redis:
+    container_name: gemtec-api-redis
+    image: redis:6.2-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - gemtec-api-network
+    command: ["redis-server", "--appendonly", "no"]
+
+volumes:
+  gemtec-api-postgres-data:
+  gemtec-api-miniodata:
+
+networks:
+  gemtec-api-network:
+    name: gemtec-api-network
