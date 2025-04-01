@@ -15,3 +15,78 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model ContactForm {
+  id        String   @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobOffering {
+  id           String         @id @default(uuid())
+  title        String
+  cityName     String
+  countryName  String
+  positionType String
+  department   String
+  requirements Requirement[]
+  applications Application[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Requirement {
+  id          String      @id @default(uuid())
+  title       String
+  positionId  String
+  position    JobOffering @relation(fields: [positionId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Application {
+  id                  String      @id @default(uuid())
+  firstName           String
+  lastName            String
+  email               String
+  phoneNumber         String
+  currentLocation     String
+  yearsOfExperience   Int
+  highestEducation    String
+  coverLetter         String
+  positionId          String
+  position            JobOffering @relation(fields: [positionId], references: [id])
+  resume              Resume?
+  isSeen              Boolean     @default(false)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+model Resume {
+  id           String     @id @default(uuid())
+  applicationId String    @unique
+  application   Application @relation(fields: [applicationId], references: [id])
+  fileUrl       String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model QuoteRequest {
+  id             String   @id @default(uuid())
+  firstName      String
+  lastName       String
+  email          String
+  companyName    String
+  phoneNumber    String
+  productCategory String
+  productType    String
+  description    String
+  isSeen         Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
