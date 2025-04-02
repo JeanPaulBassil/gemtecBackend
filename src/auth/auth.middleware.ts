@@ -11,9 +11,15 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
+    // Bypass authentication in development mode
+    if (process.env.NODE_ENV === 'dev') {
+      return next();
+    }
+
     const token = req.headers.authorization?.split("Bearer ")[1];
 
     if (!token) {
+      console.log("maalem 1")
       return res.status(401).json({ message: "Unauthorized" });
     }
 

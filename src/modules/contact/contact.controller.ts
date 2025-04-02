@@ -1,23 +1,15 @@
 import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { ContactForm } from '@prisma/client';
+import { CreateContactDto } from './dto/create-contact.dto';
 
 @Controller('contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @Post()
-  async create(
-    @Body()
-    data: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      subject: string;
-      message: string;
-    },
-  ): Promise<ContactForm> {
-    return this.contactService.create(data);
+  async create(@Body() createContactDto: CreateContactDto): Promise<ContactForm> {
+    return this.contactService.create(createContactDto);
   }
 
   @Get()

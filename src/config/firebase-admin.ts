@@ -1,6 +1,9 @@
 import * as admin from "firebase-admin";
-// Instead of importing the JSON file directly, we'll use environment variables or parse it manually
-if (!admin.apps.length) {
+
+// Disable Firebase Admin in development mode
+if (process.env.NODE_ENV === 'dev') {
+  console.log('Firebase Admin disabled in development mode');
+} else if (!admin.apps.length) {
   try {
     // Option 1: Use environment variable if available
     if (process.env.FIREBASE_SERVICE_ACCOUNT) {

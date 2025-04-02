@@ -10,9 +10,12 @@ import { ConfigModule } from "@nestjs/config";
 import { PrismaModule, QueryInfo, loggingMiddleware } from "nestjs-prisma";
 import { LoggerMiddleware, RealIpMiddleware } from "src/common/middleware";
 import { UserModule } from "../user/user.module";
-import { AuthMiddleware } from "src/auth/auth.middleware";
+// import { AuthMiddleware } from "src/auth/auth.middleware";
 import { validateConfig } from "../config/config.schema";
-import { AuthModule } from "../auth/auth.module";
+import { JobModule } from "../job/job.module";
+import { QuoteModule } from "../quote/quote.module";
+import { ContactModule } from "../contact/contact.module";
+// import { AuthModule } from "../auth/auth.module";
 
 @Module({
   imports: [
@@ -47,18 +50,11 @@ import { AuthModule } from "../auth/auth.module";
     //   name: "sms-validation-queue",
     // }),
     // AuthModule,
-    AuthModule,
+    // AuthModule,
     UserModule,
-    // CompanyModule,
-    // EntityModule,
-    // GuestModule,
-    // TableModule,
-    // MinioClientModule,
-    // FileUploadModule,
-    // ReservationModule,
-    // ShiftModule,
-    // SmsModule,
-    // SmsValidationModule,
+    JobModule,
+    QuoteModule,
+    ContactModule,
   ],
   controllers: [AppController],
   // providers: [
@@ -78,14 +74,14 @@ export class AppModule implements NestModule {
       .apply(LoggerMiddleware, RealIpMiddleware)
       .forRoutes({ path: "*", method: RequestMethod.ALL });
 
-    // Apply AuthMiddleware to all routes except auth routes
-    consumer
-      .apply(AuthMiddleware)
-      .exclude(
-        { path: "auth/login", method: RequestMethod.POST },
-        { path: "auth/register", method: RequestMethod.POST },
-        { path: "auth/refresh", method: RequestMethod.POST },
-      )
-      .forRoutes({ path: "*", method: RequestMethod.ALL });
+    // Temporarily disabled authentication
+    // consumer
+    //   .apply(AuthMiddleware)
+    //   .exclude(
+    //     { path: "auth/login", method: RequestMethod.POST },
+    //     { path: "auth/register", method: RequestMethod.POST },
+    //     { path: "auth/refresh", method: RequestMethod.POST },
+    //   )
+    //   .forRoutes({ path: "*", method: RequestMethod.ALL });
   }
 }

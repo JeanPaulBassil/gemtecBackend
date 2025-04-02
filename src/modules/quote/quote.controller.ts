@@ -1,26 +1,17 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
 import { QuoteService } from './quote.service';
 import { QuoteRequest } from '@prisma/client';
+import { CreateQuoteDto } from './dto/create-quote.dto';
+import { UpdateQuoteDto } from './dto/update-quote.dto';
+import { QuoteIdDto } from './dto/quote-id.dto';
 
 @Controller('quotes')
 export class QuoteController {
   constructor(private readonly quoteService: QuoteService) {}
 
   @Post()
-  async create(
-    @Body()
-    data: {
-      firstName: string;
-      lastName: string;
-      email: string;
-      companyName: string;
-      phoneNumber: string;
-      productCategory: string;
-      productType: string;
-      description: string;
-    },
-  ): Promise<QuoteRequest> {
-    return this.quoteService.create(data);
+  async create(@Body() createQuoteDto: CreateQuoteDto): Promise<QuoteRequest> {
+    return this.quoteService.create(createQuoteDto);
   }
 
   @Get()
@@ -29,20 +20,20 @@ export class QuoteController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<QuoteRequest | null> {
+  async findOne(@Param() { id }: QuoteIdDto): Promise<QuoteRequest | null> {
     return this.quoteService.findOne(id);
   }
 
   @Put(':id')
   async update(
-    @Param('id') id: string,
-    @Body() data: { isSeen?: boolean },
+    @Param() { id }: QuoteIdDto,
+    @Body() updateQuoteDto: UpdateQuoteDto,
   ): Promise<QuoteRequest> {
-    return this.quoteService.update(id, data);
+    return this.quoteService.update(id, updateQuoteDto);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<QuoteRequest> {
+  async delete(@Param() { id }: QuoteIdDto): Promise<QuoteRequest> {
     return this.quoteService.delete(id);
   }
 } 

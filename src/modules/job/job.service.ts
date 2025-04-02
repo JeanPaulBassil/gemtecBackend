@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../common/prisma.service';
+import { PrismaService } from '../../common/services/prisma.service';
 import { JobOffering, Requirement, Application } from '@prisma/client';
 
 @Injectable()
@@ -73,6 +73,12 @@ export class JobService {
   }
 
   async delete(id: string): Promise<JobOffering> {
+    // First delete all requirements associated with the job
+    await this.prisma.requirement.deleteMany({
+      where: { positionId: id },
+    });
+
+    // Then delete the job offering
     return this.prisma.jobOffering.delete({
       where: { id },
       include: {
@@ -103,12 +109,8 @@ export class JobService {
   // Application related methods
   async getApplications(jobId: string): Promise<Application[]> {
     return this.prisma.application.findMany({
-      where: {
-        positionId: jobId,
-      },
-      include: {
-        resume: true,
-      },
+      where: { positionId: jobId },
+      orderBy: { createdAt: 'desc' },
     });
   }
 } 
