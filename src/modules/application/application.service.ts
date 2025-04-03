@@ -99,6 +99,12 @@ export class ApplicationService {
   }
 
   async delete(id: string): Promise<Application> {
+    // First delete the resume if it exists
+    await this.prisma.resume.deleteMany({
+      where: { applicationId: id },
+    });
+
+    // Then delete the application
     return this.prisma.application.delete({
       where: { id },
       include: {
