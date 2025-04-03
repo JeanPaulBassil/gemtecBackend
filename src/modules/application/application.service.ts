@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../common/services/prisma.service';
-import { Application, Resume } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../../common/services/prisma.service";
+import { Application, Resume } from "@prisma/client";
 
 @Injectable()
 export class ApplicationService {
@@ -44,7 +44,7 @@ export class ApplicationService {
         position: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
   }
@@ -59,9 +59,12 @@ export class ApplicationService {
     });
   }
 
-  async update(id: string, data: {
-    isSeen?: boolean;
-  }): Promise<Application> {
+  async update(
+    id: string,
+    data: {
+      isSeen?: boolean;
+    },
+  ): Promise<Application> {
     return this.prisma.application.update({
       where: { id },
       data,
@@ -104,4 +107,4 @@ export class ApplicationService {
       where: { id },
     });
   }
-} 
+}
