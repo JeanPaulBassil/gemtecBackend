@@ -17,6 +17,8 @@ import { AllExceptionsFilter } from "./common/filters";
 import { PrismaClientExceptionFilter } from "nestjs-prisma";
 import { IConfig, INestConfig } from "./modules/config/config.schema";
 import { killAppWithGrace, setupSwagger } from "./common/helpers/app.utils";
+import { join } from "path";
+import * as express from "express";
 
 const logger = new Logger("Bootstrap");
 
@@ -41,9 +43,10 @@ async function bootstrap() {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: [`'self'`],
-          styleSrc: [`'self'`, `'unsafe-inline'`],
+          styleSrc: [`'self'`, `'unsafe-inline'`, "fonts.googleapis.com"],
           imgSrc: [`'self'`, "data:", "validator.swagger.io"],
           scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+          fontSrc: [`'self'`, "fonts.gstatic.com"],
         },
       },
     }),
@@ -54,6 +57,16 @@ async function bootstrap() {
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   });
+
+  // ======================================================
+  // Serve static assets and theme files
+  // ======================================================
+  
+  // Serve static files from the 'public' directory
+  app.use(express.static(join(__dirname, '..', 'public')));
+  
+  // Serve the theme files
+  app.use('/styles', express.static(join(__dirname, 'common/styles')));
 
   // =====================================================
   // configure global pipes, filters, interceptors
