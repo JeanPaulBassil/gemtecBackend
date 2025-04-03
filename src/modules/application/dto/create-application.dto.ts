@@ -1,4 +1,10 @@
-import { IsString, IsEmail, IsNumber, IsOptional, IsObject } from 'class-validator';
+import {
+  IsString,
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsObject,
+} from "class-validator";
 
 export class CreateApplicationDto {
   @IsString()
@@ -33,4 +39,4 @@ export class CreateApplicationDto {
   resume?: {
     fileUrl: string;
   };
-} 
+}
