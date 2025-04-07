@@ -15,7 +15,7 @@ import { validateConfig } from "../config/config.schema";
 import { JobModule } from "../job/job.module";
 import { QuoteModule } from "../quote/quote.module";
 import { ContactModule } from "../contact/contact.module";
-import { ApplicationModule } from "../application/application.module";
+import { application } from "express";
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
