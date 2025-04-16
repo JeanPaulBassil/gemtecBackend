@@ -1,0 +1,382 @@
+/* Modern Green Theme - Component Styles */
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: var(--border-radius-medium);
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  transition: var(--transition-quick);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary-teal);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background-color: #1e8e82; /* Darker teal */
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary-lightest);
+}
+
+/* Cards */
+.card {
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-medium);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.card-header {
+  padding: var(--spacing-md);
+  background-color: var(--color-primary-lightest);
+  border-bottom: 1px solid var(--color-primary-lighter);
+}
+
+.card-body {
+  padding: var(--spacing-md);
+}
+
+.card-footer {
+  padding: var(--spacing-md);
+  background-color: var(--color-grey-50);
+  border-top: 1px solid var(--color-grey-200);
+}
+
+/* Form elements */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  border: 1px solid var(--color-grey-300);
+  border-radius: var(--border-radius-small);
+  transition: var(--transition-quick);
+  background-color: var(--color-white);
+  color: var(--color-text-primary);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-lightest);
+}
+
+.form-control::placeholder {
+  color: var(--color-text-hint);
+}
+
+/* Tables */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: var(--spacing-lg);
+}
+
+.table th,
+.table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--color-grey-200);
+}
+
+.table th {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  background-color: var(--color-primary-lightest);
+  border-bottom: 2px solid var(--color-primary-lighter);
+}
+
+.table tr:hover {
+  background-color: var(--color-grey-50);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 8px;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--border-radius-small);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-primary {
+  background-color: var(--color-primary-lightest);
+  color: var(--color-primary-darker);
+}
+
+.badge-success {
+  background-color: #e6f7e6;
+  color: #2e7d32;
+}
+
+.badge-info {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.badge-warning {
+  background-color: #fff8e1;
+  color: #f57c00;
+}
+
+.badge-error {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Alerts */
+.alert {
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-small);
+  margin-bottom: var(--spacing-md);
+  border-left: 4px solid transparent;
+}
+
+.alert-success {
+  background-color: #e6f7e6;
+  border-left-color: var(--color-success);
+  color: #2e7d32;
+}
+
+.alert-info {
+  background-color: #e3f2fd;
+  border-left-color: var(--color-info);
+  color: #0d47a1;
+}
+
+.alert-warning {
+  background-color: #fff8e1;
+  border-left-color: var(--color-warning);
+  color: #f57c00;
+}
+
+.alert-error {
+  background-color: #ffebee;
+  border-left-color: var(--color-error);
+  color: #c62828;
+}
+
+/* Compact Components */
+
+/* Compact Requirements List */
+.compact-requirements {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.requirement-item {
+  padding: var(--spacing-sm);
+  background-color: var(--color-primary-lightest);
+  border-radius: var(--border-radius-small);
+  border-left: 3px solid var(--color-primary);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: center;
+}
+
+.requirement-item:before {
+  content: "•";
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  margin-right: var(--spacing-xs);
+  font-size: 1.2em;
+}
+
+/* Compact Contact Messages */
+.compact-messages {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius-medium);
+}
+
+.message-item {
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-grey-200);
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.message-item:last-child {
+  border-bottom: none;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.message-sender {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.message-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.message-preview {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-actions {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+/* Compact Resume Cards */
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.resume-card {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-medium);
+  background-color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-quick);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.resume-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.resume-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+  padding-bottom: var(--spacing-xs);
+  border-bottom: 1px solid var(--color-grey-200);
+}
+
+.resume-name {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+}
+
+.resume-date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.resume-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--font-size-xs);
+  flex: 1;
+}
+
+.resume-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.resume-detail-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.resume-detail-value {
+  color: var(--color-text-secondary);
+}
+
+.resume-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-sm);
+}
+
+.resume-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+} 

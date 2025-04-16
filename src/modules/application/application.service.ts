@@ -4,7 +4,7 @@ import { Application, Resume } from "@prisma/client";
 
 @Injectable()
 export class ApplicationService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(data: {
     firstName: string;
@@ -26,8 +26,8 @@ export class ApplicationService {
         ...applicationData,
         resume: resume
           ? {
-            create: resume,
-          }
+              create: resume,
+            }
           : undefined,
       },
       include: {
@@ -84,11 +84,11 @@ export class ApplicationService {
         ...applicationData,
         resume: resume
           ? {
-            upsert: {
-              create: resume,
-              update: resume,
-            },
-          }
+              upsert: {
+                create: resume,
+                update: resume,
+              },
+            }
           : undefined,
       },
       include: {
