@@ -15,6 +15,7 @@ import { validateConfig } from "../config/config.schema";
 import { JobModule } from "../job/job.module";
 import { QuoteModule } from "../quote/quote.module";
 import { ContactModule } from "../contact/contact.module";
+import { ProductModule } from "../products/product.module";
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -55,6 +56,7 @@ import { ContactModule } from "../contact/contact.module";
     JobModule,
     QuoteModule,
     ContactModule,
+    ProductModule,
   ],
   controllers: [AppController],
   // providers: [
