@@ -96,6 +96,9 @@ export class CategoryController {
     }
   }
 
+  /**
+   * Delete a category and all its subcategories recursively
+   */
   @Delete(':id')
   remove(@Param('id') id: string) {
     try {
@@ -103,7 +106,10 @@ export class CategoryController {
       if (!category) {
         throw new HttpException('Category not found', HttpStatus.NOT_FOUND);
       }
-      return category;
+      return {
+        ...category,
+        message: 'Category and all its subcategories were deleted successfully'
+      };
     } catch (error) {
       if (error instanceof HttpException) {
         throw error;

@@ -1,7 +1,8 @@
 import * as admin from "firebase-admin";
-import { Injectable, NestMiddleware, Logger } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
+import { NestMiddleware } from "@nestjs/common/interfaces";
 import { Request, Response, NextFunction } from "express";
-import { PrismaService } from "nestjs-prisma";
+import { PrismaService } from "../common/services/prisma.service";
 import { revokedUsers } from "../modules/user/user.service";
 
 @Injectable()

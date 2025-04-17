@@ -104,20 +104,36 @@ export class CategoryService {
   }
 
   remove(id: string): Category | null {
-    // Check if category has children
-    if (this.categories.some(cat => cat.parentId === id)) {
-      throw new Error('Cannot delete category with subcategories');
-    }
-    
     const index = this.categories.findIndex(c => c.id === id);
     if (index === -1) return null;
 
     const deletedCategory = this.categories[index];
     
-    // Remove the category
+    // Recursively delete all subcategories
+    this.recursivelyDeleteSubcategories(id);
+    
+    // Remove the main category
     this.categories.splice(index, 1);
     
     return deletedCategory;
+  }
+
+  // Helper method to recursively delete all subcategories
+  private recursivelyDeleteSubcategories(parentId: string): void {
+    // Find all direct children
+    const children = this.findChildren(parentId);
+    
+    // For each child
+    for (const child of children) {
+      // Delete its children first (recursive call)
+      this.recursivelyDeleteSubcategories(child.id);
+      
+      // Then delete the child itself
+      const childIndex = this.categories.findIndex(c => c.id === child.id);
+      if (childIndex !== -1) {
+        this.categories.splice(childIndex, 1);
+      }
+    }
   }
 
   // Get direct children of a category
