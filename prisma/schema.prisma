@@ -90,13 +90,17 @@ model QuoteRequest {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
 model Product {
   id               String         @id @default(uuid())
   name             String
+  slug             String         @unique
   subtitle         String?
   specifications   String?        // TECHNICAL SPECIFICATIONS tab (as Markdown or JSON string)
   certificates     String?        // CERTIFICATES tab (as plain text or Markdown)
   generalFeatures  String?        // GENERAL FEATURES tab (as Markdown)
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
   images           ProductImage[] // multiple product images
@@ -111,4 +115,16 @@ model ProductImage {
   order      Int?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+}
+
+model Category {
+  id          String     @id @default(uuid())
+  name        String
+  slug        String     @unique
+  parentId    String?    // null means it's a top-level category
+  parent      Category?  @relation("Subcategories", fields: [parentId], references: [id])
+  children    Category[] @relation("Subcategories")
+  products    Product[]  // direct products in this category
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

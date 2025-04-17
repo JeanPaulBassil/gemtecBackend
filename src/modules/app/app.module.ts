@@ -16,6 +16,7 @@ import { JobModule } from "../job/job.module";
 import { QuoteModule } from "../quote/quote.module";
 import { ContactModule } from "../contact/contact.module";
 import { ProductModule } from "../products/product.module";
+import { CategoryModule } from "../category/category.module";
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -57,6 +58,7 @@ import { ProductModule } from "../products/product.module";
     QuoteModule,
     ContactModule,
     ProductModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   // providers: [
