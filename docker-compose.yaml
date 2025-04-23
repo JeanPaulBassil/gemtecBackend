@@ -50,19 +50,17 @@ services:
     build:
       context: .
       dockerfile: ./docker/dev.Dockerfile
-    env_file:
-      - .env
     environment:
-      - FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"gemtec-e25e8"}
-      - FIREBASE_PROJECT_ID=gemtec-e25e8
-      - NESTJS_PORT=3001
       - NODE_ENV=development
+      - PORT=3002
+      - FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"gemtec-e25e8","private_key":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9QFxMG9JA1POA\n...YOUR-PRIVATE-KEY-HERE...\nVScXHAIDAQAB\n-----END PRIVATE KEY-----\n","client_email":"firebase-adminsdk@gemtec-e25e8.iam.gserviceaccount.com"}
+      - FIREBASE_PROJECT_ID=gemtec-e25e8
     networks:
       - gemtec-api-network
     expose:
-      - 3001
+      - 3002
     ports:
-      - "3001:3001"
+      - "3002:3002"
       - "5555:5555"
     depends_on:
       - postgres
