@@ -50,11 +50,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/dev.Dockerfile
-    environment:
-      - NODE_ENV=development
-      - PORT=3002
-      - FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"gemtec-e25e8","private_key":"-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC9QFxMG9JA1POA\n...YOUR-PRIVATE-KEY-HERE...\nVScXHAIDAQAB\n-----END PRIVATE KEY-----\n","client_email":"firebase-adminsdk@gemtec-e25e8.iam.gserviceaccount.com"}
-      - FIREBASE_PROJECT_ID=gemtec-e25e8
+    env_file:
+      - .env
     networks:
       - gemtec-api-network
     expose:

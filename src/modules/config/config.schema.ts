@@ -55,32 +55,32 @@ export interface IConfig {
 
 const configSchema = Joi.object({
   database: Joi.object({
-    user: Joi.string().required(),
+    user: Joi.string().required().default("postgres"),
     password: Joi.string().required().allow(""),
-    db: Joi.string().required(),
+    db: Joi.string().required().default("gemtec"),
     port: Joi.number().default(5432),
     host: Joi.string().default("localhost"),
   }).required(),
 
-  s3: {
-    provider: Joi.string().required().default(process.env.S3_PROVIDER),
-    bucketName: Joi.string().required().default(process.env.S3_BUCKET_NAME),
+  s3: Joi.object({
+    provider: Joi.string().required().default("local"),
+    bucketName: Joi.string().required().default("gemtec"),
     stackheroMinioHost: Joi.string()
       .required()
-      .default(process.env.STACKHERO_MINIO_HOST),
+      .default("minio"),
     minioConsolePort: Joi.number()
       .required()
-      .default(Number(process.env.MINIO_CONSOLE_PORT)),
+      .default(9001),
     minioApiPort: Joi.number()
       .required()
-      .default(Number(process.env.MINIO_API_PORT)),
+      .default(9002),
     stackheroMinioAccessKey: Joi.string()
       .required()
-      .default(process.env.STACKHERO_MINIO_ACCESS_KEY),
+      .default("admin"),
     stackheroMinioSecretKey: Joi.string()
       .required()
-      .default(process.env.STACKHERO_MINIO_SECRET_KEY),
-  },
+      .default("admin"),
+  }).required(),
 
   nest: Joi.object({
     appUrl: Joi.string().required().default("http://localhost:3000"),
@@ -111,14 +111,14 @@ const configSchema = Joi.object({
 function transformConfig(config: Record<string, any>): IConfig {
   return {
     database: {
-      user: config.POSTGRES_USER,
-      password: config.POSTGRES_PASSWORD,
-      db: config.POSTGRES_DB,
-      port: Number(config.POSTGRES_PORT),
-      host: config.POSTGRES_HOST,
+      user: config.POSTGRES_USER || "postgres",
+      password: config.POSTGRES_PASSWORD || "",
+      db: config.POSTGRES_DB || "gemtec",
+      port: Number(config.POSTGRES_PORT) || 5432,
+      host: config.POSTGRES_HOST || "localhost",
     },
     s3: {
-      provider: config.S3_PROVIDER,
+      provider: config.S3_PROVIDER ,
       bucketName: config.S3_BUCKET_NAME,
       stackheroMinioHost: config.STACKHERO_MINIO_HOST,
       minioConsolePort: config.MINIO_CONSOLE_PORT,
