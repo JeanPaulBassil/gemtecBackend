@@ -52,10 +52,14 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3200", "*"],
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With", "Origin"],
+    exposedHeaders: ["Content-Length", "Content-Type"],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    maxAge: 86400 // 24 hours
   });
 
   // ======================================================
