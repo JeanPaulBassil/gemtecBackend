@@ -17,6 +17,8 @@ import { QuoteModule } from "../quote/quote.module";
 import { ContactModule } from "../contact/contact.module";
 import { ProductModule } from "../products/product.module";
 import { CategoryModule } from "../category/category.module";
+import { ApplicationModule } from "../application/application.module";
+import { AuthModule } from "../auth/auth.module";
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -52,13 +54,14 @@ import { CategoryModule } from "../category/category.module";
     //   name: "sms-validation-queue",
     // }),
     // AuthModule,
-    // AuthModule,
+    AuthModule,
     UserModule,
     JobModule,
     QuoteModule,
     ContactModule,
     ProductModule,
     CategoryModule,
+    ApplicationModule,
   ],
   controllers: [AppController],
   // providers: [

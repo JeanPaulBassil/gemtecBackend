@@ -55,9 +55,9 @@ services:
     networks:
       - gemtec-api-network
     expose:
-      - 3002
+      - 3200
     ports:
-      - "3002:3002"
+      - "3200:3200"
       - "5555:5555"
     depends_on:
       - postgres
