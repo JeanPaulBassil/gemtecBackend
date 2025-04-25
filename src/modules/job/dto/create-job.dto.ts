@@ -1,6 +1,14 @@
-import { IsString, IsNotEmpty, MinLength, MaxLength, IsArray, ValidateNested, IsOptional } from 'class-validator';
-import { Type } from 'class-transformer';
-import { RequirementDto } from './requirement.dto';
+import {
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  IsArray,
+  ValidateNested,
+  IsOptional,
+} from "class-validator";
+import { Type } from "class-transformer";
+import { RequirementDto } from "./requirement.dto";
 
 export class CreateJobDto {
   @IsString()
@@ -38,4 +46,4 @@ export class CreateJobDto {
   @ValidateNested({ each: true })
   @Type(() => RequirementDto)
   requirements?: RequirementDto[];
-} 
+}

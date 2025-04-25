@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../common/services/prisma.service';
-import { JobOffering, Requirement, Application } from '@prisma/client';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../../common/services/prisma.service";
+import { JobOffering, Requirement, Application } from "@prisma/client";
 
 @Injectable()
 export class JobService {
@@ -15,6 +15,7 @@ export class JobService {
     requirements?: { title: string }[];
   }): Promise<JobOffering> {
     const { requirements, ...jobData } = data;
+
     return this.prisma.jobOffering.create({
       data: {
         ...jobData,
@@ -37,7 +38,7 @@ export class JobService {
         applications: true,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: "desc",
       },
     });
   }
@@ -110,7 +111,7 @@ export class JobService {
   async getApplications(jobId: string): Promise<Application[]> {
     return this.prisma.application.findMany({
       where: { positionId: jobId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
   }
-} 
+}

@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, MinLength, MaxLength } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  IsBoolean,
+  IsOptional,
+} from "class-validator";
 
 export class RequirementDto {
   @IsString()
@@ -6,4 +13,8 @@ export class RequirementDto {
   @MinLength(3)
   @MaxLength(200)
   title: string;
-} 
+
+  @IsBoolean()
+  @IsOptional()
+  isRequired: boolean;
+}
