@@ -52,25 +52,31 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: ["http://localhost:3000", "http://localhost:3001", "http://localhost:3200", "*"],
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
-    allowedHeaders: ["Content-Type", "Authorization", "Accept", "X-Requested-With", "Origin"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Accept",
+      "X-Requested-With",
+      "Origin",
+    ],
     exposedHeaders: ["Content-Length", "Content-Type"],
     credentials: true,
     preflightContinue: false,
     optionsSuccessStatus: 204,
-    maxAge: 86400 // 24 hours
+    maxAge: 86400, // 24 hours
   });
 
   // ======================================================
   // Serve static assets and theme files
   // ======================================================
-  
+
   // Serve static files from the 'public' directory
-  app.use(express.static(join(__dirname, '..', 'public')));
-  
+  app.use(express.static(join(__dirname, "..", "public")));
+
   // Serve the theme files
-  app.use('/styles', express.static(join(__dirname, 'common/styles')));
+  app.use("/styles", express.static(join(__dirname, "common/styles")));
 
   // =====================================================
   // configure global pipes, filters, interceptors
