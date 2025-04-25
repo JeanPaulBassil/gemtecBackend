@@ -37,4 +37,11 @@ export class ContactService {
       where: { id },
     });
   }
+
+  async updateReadStatus(id: string, isRead: boolean): Promise<ContactForm> {
+    return this.prisma.contactForm.update({
+      where: { id },
+      data: { isRead },
+    });
+  }
 } 
