@@ -129,3 +129,14 @@ model Category {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
+
+model Project {
+  id            String   @id @default(uuid())
+  title         String
+  photoUrl      String
+  itemsSupplied String[]
+  location      String
+  brands        String[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

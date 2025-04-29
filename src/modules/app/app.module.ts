@@ -19,6 +19,7 @@ import { ProductModule } from "../products/product.module";
 import { CategoryModule } from "../category/category.module";
 import { ApplicationModule } from "../application/application.module";
 import { AuthModule } from "../auth/auth.module";
+import { ProjectModule } from "../projects/project.module";
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -62,6 +63,7 @@ import { AuthModule } from "../auth/auth.module";
     ProductModule,
     CategoryModule,
     ApplicationModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   // providers: [
