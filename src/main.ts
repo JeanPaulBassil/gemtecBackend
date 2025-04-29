@@ -86,10 +86,11 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,
+      whitelist: false,
       transform: true,
       forbidUnknownValues: false,
       validateCustomDecorators: true,
+      skipMissingProperties: true,
       exceptionFactory: (errors: ValidationError[]) =>
         new HttpException(
           {

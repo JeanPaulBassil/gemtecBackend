@@ -1,22 +1,38 @@
-import { IsString, IsArray, IsOptional } from 'class-validator';
+import { IsString, IsArray, IsOptional, IsDateString } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
   title: string;
 
   @IsString()
-  photo: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  itemsSupplied: string[];
+  @IsOptional()
+  description?: string;
 
   @IsString()
-  location: string;
+  @IsOptional()
+  imageUrl?: string;
+
+  @IsString()
+  @IsOptional()
+  photo?: string;
+
+  @IsDateString()
+  @IsOptional()
+  date?: string;
 
   @IsArray()
   @IsString({ each: true })
-  brands: string[];
+  @IsOptional()
+  itemsSupplied?: string[];
+
+  @IsString()
+  @IsOptional()
+  location?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  brands?: string[];
 }
 
 export class UpdateProjectDto {
@@ -26,7 +42,19 @@ export class UpdateProjectDto {
 
   @IsString()
   @IsOptional()
+  description?: string;
+
+  @IsString()
+  @IsOptional()
+  imageUrl?: string;
+  
+  @IsString()
+  @IsOptional()
   photo?: string;
+
+  @IsDateString()
+  @IsOptional()
+  date?: string;
 
   @IsArray()
   @IsString({ each: true })
