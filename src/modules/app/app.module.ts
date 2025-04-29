@@ -20,6 +20,8 @@ import { CategoryModule } from "../category/category.module";
 import { ApplicationModule } from "../application/application.module";
 import { AuthModule } from "../auth/auth.module";
 import { ProjectModule } from "../projects/project.module";
+import { NewsModule } from "../news/news.module";
+
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -64,6 +66,7 @@ import { ProjectModule } from "../projects/project.module";
     CategoryModule,
     ApplicationModule,
     ProjectModule,
+    NewsModule,
   ],
   controllers: [AppController],
   // providers: [

@@ -29,7 +29,7 @@ model ContactForm {
 }
 
 model JobOffering {
-  id           String         @id @default(uuid())
+  id           String        @id @default(uuid())
   title        String
   cityName     String
   countryName  String
@@ -42,92 +42,92 @@ model JobOffering {
 }
 
 model Requirement {
-  id          String      @id @default(uuid())
-  title       String
-  positionId  String
-  position    JobOffering @relation(fields: [positionId], references: [id])
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id         String      @id @default(uuid())
+  title      String
+  positionId String
+  position   JobOffering @relation(fields: [positionId], references: [id])
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model Application {
-  id                  String      @id @default(uuid())
-  firstName           String
-  lastName            String
-  email               String
-  phoneNumber         String
-  currentLocation     String
-  yearsOfExperience   Int
-  highestEducation    String
-  coverLetter         String
-  positionId          String
-  position            JobOffering @relation(fields: [positionId], references: [id])
-  resume              Resume?
-  isSeen              Boolean     @default(false)
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
+  id                String      @id @default(uuid())
+  firstName         String
+  lastName          String
+  email             String
+  phoneNumber       String
+  currentLocation   String
+  yearsOfExperience Int
+  highestEducation  String
+  coverLetter       String
+  positionId        String
+  position          JobOffering @relation(fields: [positionId], references: [id])
+  resume            Resume?
+  isSeen            Boolean     @default(false)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
 }
 
 model Resume {
-  id           String     @id @default(uuid())
-  applicationId String    @unique
+  id            String      @id @default(uuid())
+  applicationId String      @unique
   application   Application @relation(fields: [applicationId], references: [id])
   fileUrl       String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
 model QuoteRequest {
-  id             String   @id @default(uuid())
-  firstName      String
-  lastName       String
-  email          String
-  companyName    String
-  phoneNumber    String
+  id              String   @id @default(uuid())
+  firstName       String
+  lastName        String
+  email           String
+  companyName     String
+  phoneNumber     String
   productCategory String
-  productType    String
-  description    String
-  isSeen         Boolean  @default(false)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  productType     String
+  description     String
+  isSeen          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Product {
-  id               String         @id @default(uuid())
-  name             String
-  slug             String         @unique
-  subtitle         String?
-  specifications   String?        // TECHNICAL SPECIFICATIONS tab (as Markdown or JSON string)
-  certificates     String?        // CERTIFICATES tab (as plain text or Markdown)
-  generalFeatures  String?        // GENERAL FEATURES tab (as Markdown)
-  categoryId       String
-  category         Category       @relation(fields: [categoryId], references: [id])
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  images           ProductImage[] // multiple product images
+  id              String         @id @default(uuid())
+  name            String
+  slug            String         @unique
+  subtitle        String?
+  specifications  String? // TECHNICAL SPECIFICATIONS tab (as Markdown or JSON string)
+  certificates    String? // CERTIFICATES tab (as plain text or Markdown)
+  generalFeatures String? // GENERAL FEATURES tab (as Markdown)
+  categoryId      String
+  category        Category       @relation(fields: [categoryId], references: [id])
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  images          ProductImage[] // multiple product images
 }
 
 model ProductImage {
-  id         String   @id @default(uuid())
-  productId  String
-  product    Product  @relation(fields: [productId], references: [id])
-  imageUrl   String
-  altText    String?
-  order      Int?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  imageUrl  String
+  altText   String?
+  order     Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
-  id          String     @id @default(uuid())
-  name        String
-  slug        String     @unique
-  parentId    String?    // null means it's a top-level category
-  parent      Category?  @relation("Subcategories", fields: [parentId], references: [id])
-  children    Category[] @relation("Subcategories")
-  products    Product[]  // direct products in this category
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id        String     @id @default(uuid())
+  name      String
+  slug      String     @unique
+  parentId  String? // null means it's a top-level category
+  parent    Category?  @relation("Subcategories", fields: [parentId], references: [id])
+  children  Category[] @relation("Subcategories")
+  products  Product[] // direct products in this category
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 model Project {
@@ -139,4 +139,53 @@ model Project {
   brands        String[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model News {
+  id            String        @id @default(uuid())
+  title         String
+  slug          String        @unique
+  summary       String? // Short summary or excerpt
+  content       String // Main content as Markdown or HTML
+  featuredImage String? // URL to featured image
+  isPublished   Boolean       @default(false)
+  publishedAt   DateTime? // Null if draft
+  categoryId    String?
+  category      NewsCategory? @relation(fields: [categoryId], references: [id])
+  author        String? // Author name
+  tags          NewsOnTags[] // Relation to join table
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model NewsCategory {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String?
+  news        News[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model NewsTag {
+  id        String       @id @default(uuid())
+  name      String       @unique
+  slug      String       @unique
+  news      NewsOnTags[] // Relation to join table
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+// Join table for News and NewsTag (many-to-many)
+model NewsOnTags {
+  newsId    String
+  news      News     @relation(fields: [newsId], references: [id])
+  tagId     String
+  tag       NewsTag  @relation(fields: [tagId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([newsId, tagId])
+  @@index([newsId])
+  @@index([tagId])
 }
