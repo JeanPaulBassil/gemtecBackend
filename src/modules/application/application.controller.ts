@@ -54,8 +54,12 @@ export class ApplicationController {
   }
 
   @Delete(":id")
-  async delete(@Param("id") id: string): Promise<Application> {
-    return this.applicationService.delete(id);
+  async delete(@Param("id") id: string): Promise<{ message: string; data: Application }> {
+    const deletedApplication = await this.applicationService.delete(id);
+    return {
+      message: 'Application deleted successfully',
+      data: deletedApplication
+    };
   }
 
   @Put(":id/resume")

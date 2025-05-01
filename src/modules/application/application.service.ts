@@ -131,8 +131,108 @@ export class ApplicationService {
   }
 
   async delete(id: string): Promise<Application> {
-    return this.prisma.application.delete({
-      where: { id },
-    });
+    try {
+      // Check if application exists first
+      const application = await this.prisma.application.findUnique({
+        where: { id },
+        include: {
+          resume: true,
+        },
+      });
+      
+      if (!application) {
+        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Delete the resume if it exists
+      if (application.resume) {
+        await this.prisma.resume.delete({
+          where: { applicationId: id },
+        });
+      }
+
+      // Perform the deletion
+      return await this.prisma.application.delete({
+        where: { id },
+        include: {
+          position: true,
+        },
+      });
+    } catch (error) {
+      console.error('Error deleting application:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      if (error.code === 'P2025') {
+        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+      }
+      throw new HttpException(
+        'An error occurred while deleting the application',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async updateResume(applicationId: string, fileUrl: string): Promise<any> {
+    try {
+      // Check if application exists
+      const application = await this.prisma.application.findUnique({
+        where: { id: applicationId },
+      });
+      
+      if (!application) {
+        throw new HttpException('Application not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Update or create resume
+      return await this.prisma.resume.upsert({
+        where: {
+          applicationId,
+        },
+        update: {
+          fileUrl,
+        },
+        create: {
+          fileUrl,
+          applicationId,
+        },
+      });
+    } catch (error) {
+      console.error('Error updating resume:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'An error occurred while updating the resume',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  async deleteResume(applicationId: string): Promise<any> {
+    try {
+      // Check if resume exists
+      const resume = await this.prisma.resume.findUnique({
+        where: { applicationId },
+      });
+      
+      if (!resume) {
+        throw new HttpException('Resume not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Delete the resume
+      return await this.prisma.resume.delete({
+        where: { applicationId },
+      });
+    } catch (error) {
+      console.error('Error deleting resume:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      throw new HttpException(
+        'An error occurred while deleting the resume',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }

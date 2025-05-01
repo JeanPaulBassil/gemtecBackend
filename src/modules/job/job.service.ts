@@ -74,18 +74,38 @@ export class JobService {
   }
 
   async delete(id: string): Promise<JobOffering> {
-    // First delete all requirements associated with the job
-    await this.prisma.requirement.deleteMany({
+    // First get all applications for this job
+    const applications = await this.prisma.application.findMany({
       where: { positionId: id },
+      include: { resume: true }
     });
 
-    // Then delete the job offering
+    // Delete resumes for all applications
+    for (const application of applications) {
+      if (application.resume) {
+        await this.prisma.resume.delete({
+          where: { applicationId: application.id }
+        });
+      }
+    }
+
+    // Delete all applications
+    await this.prisma.application.deleteMany({
+      where: { positionId: id }
+    });
+
+    // Delete all requirements
+    await this.prisma.requirement.deleteMany({
+      where: { positionId: id }
+    });
+
+    // Finally delete the job offering
     return this.prisma.jobOffering.delete({
       where: { id },
       include: {
         requirements: true,
-        applications: true,
-      },
+        applications: true
+      }
     });
   }
 
