@@ -15,11 +15,14 @@ export class QuoteService {
     productCategory: string;
     productType: string;
     description: string;
+    isSeen?: boolean;
   }): Promise<QuoteRequest> {
     return this.prisma.quoteRequest.create({
       data: {
         ...data,
-        isSeen: false,
+        isSeen: data.isSeen ?? false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
     });
   }
