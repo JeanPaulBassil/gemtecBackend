@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto, UpdateProjectDto } from './project.types';
@@ -24,8 +25,12 @@ export class ProjectController {
   }
 
   @Get()
-  async findAll() {
-    return await this.projectService.findAll();
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('search') search?: string,
+  ) {
+    return await this.projectService.findAll(page, limit, search);
   }
 
   @Get(':id')

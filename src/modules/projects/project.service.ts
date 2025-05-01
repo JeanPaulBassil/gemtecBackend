@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { CreateProjectDto, UpdateProjectDto } from './project.types';
 
 @Injectable()
@@ -59,8 +59,14 @@ export class ProjectService {
     }
   }
 
-  async findAll() {
-    return await this.prisma.project.findMany();
+  async findAll(page: number, limit: number, search?: string) {
+    const where: Prisma.ProjectWhereInput = {};
+
+    if (search) {
+      where.title = { contains: search, mode: 'insensitive' };
+    }
+
+    return await this.prisma.project.findMany({ where });
   }
 
   async findOne(id: string) {
