@@ -21,8 +21,8 @@ import { ApplicationModule } from "../application/application.module";
 import { AuthModule } from "../auth/auth.module";
 import { ProjectModule } from "../projects/project.module";
 import { NewsModule } from "../news/news.module";
+import { StorageModule } from "../storage/storage.module";
 import { UploadModule } from "../upload/upload.module";
-
 // import { AuthModule } from "../auth/auth.module";
 
 @Module({
@@ -69,6 +69,7 @@ import { UploadModule } from "../upload/upload.module";
     ProjectModule,
     NewsModule,
     UploadModule,
+    StorageModule,
   ],
   controllers: [AppController],
   // providers: [
