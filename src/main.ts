@@ -19,6 +19,7 @@ import { IConfig, INestConfig } from "./modules/config/config.schema";
 import { killAppWithGrace, setupSwagger } from "./common/helpers/app.utils";
 import { join } from "path";
 import * as express from "express";
+import { existsSync, mkdirSync } from "fs";
 
 const logger = new Logger("Bootstrap");
 
@@ -34,8 +35,8 @@ async function bootstrap() {
   app.enable("trust proxy");
   app.set("etag", "strong");
   app.use(
-    bodyParser.json({ limit: "10mb" }),
-    bodyParser.urlencoded({ limit: "10mb", extended: true }),
+    bodyParser.json({ limit: "50mb" }),
+    bodyParser.urlencoded({ limit: "50mb", extended: true }),
   );
   app.use(compression());
   app.use(
@@ -72,11 +73,20 @@ async function bootstrap() {
   // Serve static assets and theme files
   // ======================================================
 
+  // Ensure uploads directory exists
+  const uploadsPath = join(process.cwd(), 'uploads');
+  if (!existsSync(uploadsPath)) {
+    mkdirSync(uploadsPath);
+  }
+
   // Serve static files from the 'public' directory
   app.use(express.static(join(__dirname, "..", "public")));
 
   // Serve the theme files
   app.use("/styles", express.static(join(__dirname, "common/styles")));
+
+  // Serve uploaded files
+  app.use("/uploads", express.static(uploadsPath));
 
   // =====================================================
   // configure global pipes, filters, interceptors

@@ -1,10 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { PrismaService } from "../../common/services/prisma.service";
-import { Application, Resume } from "@prisma/client";
+import { Application } from "@prisma/client";
 
 @Injectable()
 export class ApplicationService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+  ) {}
 
   async create(data: {
     firstName: string;
@@ -16,31 +18,77 @@ export class ApplicationService {
     highestEducation: string;
     coverLetter: string;
     positionId: string;
-    resume?: {
-      fileUrl: string;
-    };
   }): Promise<Application> {
-    const { resume, ...applicationData } = data;
-    return this.prisma.application.create({
-      data: {
-        ...applicationData,
-        resume: resume
-          ? {
-              create: resume,
-            }
-          : undefined,
-      },
-      include: {
-        resume: true,
-        position: true,
-      },
-    });
+    try {
+      // Validate required fields
+      if (!data.firstName || !data.lastName || !data.email || !data.phoneNumber || 
+          !data.currentLocation || !data.highestEducation || !data.coverLetter || !data.positionId) {
+        throw new HttpException('Missing required fields', HttpStatus.BAD_REQUEST);
+      }
+
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        throw new HttpException('Invalid email format', HttpStatus.BAD_REQUEST);
+      }
+
+      // Validate years of experience
+      if (typeof data.yearsOfExperience !== 'number' || data.yearsOfExperience < 0) {
+        throw new HttpException('Invalid years of experience', HttpStatus.BAD_REQUEST);
+      }
+
+      // Check if position exists
+      const position = await this.prisma.jobOffering.findUnique({
+        where: { id: data.positionId },
+      });
+      if (!position) {
+        throw new HttpException('Position not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Create the application
+      return await this.prisma.application.create({
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+          currentLocation: data.currentLocation,
+          yearsOfExperience: data.yearsOfExperience,
+          highestEducation: data.highestEducation,
+          coverLetter: data.coverLetter,
+          positionId: data.positionId,
+        },
+        include: {
+          position: true,
+        },
+      });
+    } catch (error) {
+      console.error('Error creating application:', error);
+      if (error instanceof HttpException) {
+        throw error;
+      }
+      if (error.code === 'P2002') {
+        throw new HttpException(
+          'An application with this email already exists for this position',
+          HttpStatus.CONFLICT
+        );
+      }
+      if (error.code === 'P2003') {
+        throw new HttpException(
+          'Invalid position ID',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+      throw new HttpException(
+        'An error occurred while creating the application',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   async findAll(): Promise<Application[]> {
     return this.prisma.application.findMany({
       include: {
-        resume: true,
         position: true,
       },
       orderBy: {
@@ -53,7 +101,6 @@ export class ApplicationService {
     return this.prisma.application.findUnique({
       where: { id },
       include: {
-        resume: true,
         position: true,
       },
     });
@@ -72,67 +119,19 @@ export class ApplicationService {
       coverLetter?: string;
       positionId?: string;
       isSeen?: boolean;
-      resume?: {
-        fileUrl: string;
-      };
     },
   ): Promise<Application> {
-    const { resume, ...applicationData } = data;
     return this.prisma.application.update({
       where: { id },
-      data: {
-        ...applicationData,
-        resume: resume
-          ? {
-              upsert: {
-                create: resume,
-                update: resume,
-              },
-            }
-          : undefined,
-      },
+      data,
       include: {
-        resume: true,
         position: true,
       },
     });
   }
 
   async delete(id: string): Promise<Application> {
-    // First delete the resume if it exists
-    await this.prisma.resume.deleteMany({
-      where: { applicationId: id },
-    });
-
-    // Then delete the application
     return this.prisma.application.delete({
-      where: { id },
-      include: {
-        resume: true,
-      },
-    });
-  }
-
-  // Resume related methods
-  async updateResume(applicationId: string, fileUrl: string): Promise<Resume> {
-    return this.prisma.resume.upsert({
-      where: {
-        applicationId,
-      },
-      update: {
-        fileUrl,
-      },
-      create: {
-        fileUrl,
-        application: {
-          connect: { id: applicationId },
-        },
-      },
-    });
-  }
-
-  async deleteResume(id: string): Promise<Resume> {
-    return this.prisma.resume.delete({
       where: { id },
     });
   }

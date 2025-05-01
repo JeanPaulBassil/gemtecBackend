@@ -21,6 +21,7 @@ import { ApplicationModule } from "../application/application.module";
 import { AuthModule } from "../auth/auth.module";
 import { ProjectModule } from "../projects/project.module";
 import { NewsModule } from "../news/news.module";
+import { UploadModule } from "../upload/upload.module";
 
 // import { AuthModule } from "../auth/auth.module";
 
@@ -67,6 +68,7 @@ import { NewsModule } from "../news/news.module";
     ApplicationModule,
     ProjectModule,
     NewsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   // providers: [
